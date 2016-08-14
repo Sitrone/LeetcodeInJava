@@ -4,6 +4,14 @@ import com.algs.RandomSample;
 import com.algs.Shuffle;
 
 public class ProbabilityTest {
+	/*
+	 *  ref: http://coolshell.cn/articles/8593.html,洗牌程序测试
+	 *  比如我们要求洗牌结果：
+	 *  样本：100万次
+	 *	最大误差：10%以内
+	 *	平均误差：5%以内 （或者：90%以上的误差要小于5%）
+	 */
+	
 	/**
 	 *  列是每个位置出现的次数，行是各个字符的统计
 	 * @param count
