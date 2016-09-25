@@ -4,12 +4,12 @@ import java.util.Random;
 
 public class Shuffle {
 	public static void shuffle(int[] nums) {
-		// Fisher–Yates shuffle
-		// 每次从剩余的数组中随机取出一个数与最后一个数交换
-		// 默认rand是安全的
+		// Fisher鈥揧ates shuffle
+		// 姣忔浠庡墿浣欑殑鏁扮粍涓殢鏈哄彇鍑轰竴涓暟涓庢渶鍚庝竴涓暟浜ゆ崲
+		// 榛樿rand鏄畨鍏ㄧ殑
 		Random rd = new Random();
 		int len = nums.length;
-		int j = len - 1;
+		int j = len;
 		while (j-- > 1) {
 			int index = rd.nextInt(j + 1);
 			int a = nums[index];
