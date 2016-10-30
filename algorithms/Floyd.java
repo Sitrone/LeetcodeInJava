@@ -43,6 +43,7 @@ public class Floyd {
 		return cycleLength;
     }
     
+	//找到环的起始位置
     public ListNode detectCycle(ListNode head) {
     	if(!hasCycle(head)){
     		return null;
