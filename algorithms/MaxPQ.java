@@ -24,6 +24,7 @@ public class MaxPQ<Key extends Comparable<Key>> implements Iterable<Key>
     public MaxPQ(int capacity)
     {
         pq = (Key[]) new Comparable[capacity + 1];
+        N = 0;
     }
     
     @SuppressWarnings("unchecked")
@@ -68,18 +69,6 @@ public class MaxPQ<Key extends Comparable<Key>> implements Iterable<Key>
         return max;
     }
 
-    private boolean less(int i, int j)
-    {
-        return pq[i].compareTo(pq[j]) < 0;
-    }
-
-    private void exch(int i, int j)
-    {
-        Key t = pq[i];
-        pq[i] = pq[j];
-        pq[j] = t;
-    }
-
     private void swin(int k)
     {
         while (k > 1 && less(k / 2, k))
@@ -106,7 +95,7 @@ public class MaxPQ<Key extends Comparable<Key>> implements Iterable<Key>
         assert capacity > N;
         @SuppressWarnings("unchecked")
         Key[] temp = (Key[]) new Comparable[capacity + 1];
-        System.arraycopy(getClass(), 0, temp, 0, N);
+        System.arraycopy(pq, 0, temp, 0, N);
         pq = temp;
     }
     
@@ -124,6 +113,18 @@ public class MaxPQ<Key extends Comparable<Key>> implements Iterable<Key>
         if(left < N && less(k, right)) return false;
         
         return isMaxPQ(left) && isMaxPQ(right);
+    }
+    
+    private boolean less(int i, int j)
+    {
+        return pq[i].compareTo(pq[j]) < 0;
+    }
+
+    private void exch(int i, int j)
+    {
+        Key t = pq[i];
+        pq[i] = pq[j];
+        pq[j] = t;
     }
     
     @Override
