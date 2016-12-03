@@ -1,3 +1,5 @@
+package com.cs61b.hw3;
+
 /* Homework3.java */
 
 public class Homework3 {
@@ -21,6 +23,25 @@ public class Homework3 {
   public static void smoosh(int[] ints) {
     // Fill in your solution here.  (Ours is twelve lines long, not counting
     // blank lines or lines already present in this file.)
+      int i, j ,k = 0;
+      for(i = 0, j = 0; i < ints.length  && j < ints.length; j++)
+      {
+          if(ints[i] == ints[j])
+          {
+              continue;
+          }
+          else
+          {
+              ints[k++] = ints[i];
+              i = j;
+          }
+      }
+      ints[k++] = ints[i];
+      while(k < ints.length)
+      {
+          ints[k++] = -1;
+      }
+      
   }
 
   /**
@@ -47,41 +68,41 @@ public class Homework3 {
     int i;
 
 
-    System.out.println("Let's smoosh arrays!\n");
-
-    int[] test1 = {3, 7, 7, 7, 4, 5, 5, 2, 0, 8, 8, 8, 8, 5};
-    System.out.println("smooshing " + stringInts(test1) + ":");
-    smoosh(test1);
-    result = stringInts(test1);
-    System.out.println(result);
-    TestHelper.verify(result.equals(
-            "[  3  7  4  5  2  0  8  5  -1  -1  -1  -1  -1  -1  ]"),
-                      "BAD SMOOSH!!!  No cookie.");
-
-    int[] test2 = {6, 6, 6, 6, 6, 3, 6, 3, 6, 3, 3, 3, 3, 3, 3};
-    System.out.println("smooshing " + stringInts(test2) + ":");
-    smoosh(test2);
-    result = stringInts(test2);
-    System.out.println(result);
-    TestHelper.verify(result.equals(
-            "[  6  3  6  3  6  3  -1  -1  -1  -1  -1  -1  -1  -1  -1  ]"),
-                      "BAD SMOOSH!!!  No cookie.");
-
-    int[] test3 = {4, 4, 4, 4, 4};
-    System.out.println("smooshing " + stringInts(test3) + ":");
-    smoosh(test3);
-    result = stringInts(test3);
-    System.out.println(result);
-    TestHelper.verify(result.equals("[  4  -1  -1  -1  -1  ]"),
-                      "BAD SMOOSH!!!  No cookie.");
-
-    int[] test4 = {0, 1, 2, 3, 4, 5, 6};
-    System.out.println("smooshing " + stringInts(test4) + ":");
-    smoosh(test4);
-    result = stringInts(test4);
-    System.out.println(result);
-    TestHelper.verify(result.equals("[  0  1  2  3  4  5  6  ]"),
-                      "BAD SMOOSH!!!  No cookie.");
+//    System.out.println("Let's smoosh arrays!\n");
+//
+//    int[] test1 = {3, 7, 7, 7, 4, 5, 5, 2, 0, 8, 8, 8, 8, 5};
+//    System.out.println("smooshing " + stringInts(test1) + ":");
+//    smoosh(test1);
+//    result = stringInts(test1);
+//    System.out.println(result);
+//    TestHelper.verify(result.equals(
+//            "[  3  7  4  5  2  0  8  5  -1  -1  -1  -1  -1  -1  ]"),
+//                      "BAD SMOOSH!!!  No cookie.");
+//
+//    int[] test2 = {6, 6, 6, 6, 6, 3, 6, 3, 6, 3, 3, 3, 3, 3, 3};
+//    System.out.println("smooshing " + stringInts(test2) + ":");
+//    smoosh(test2);
+//    result = stringInts(test2);
+//    System.out.println(result);
+//    TestHelper.verify(result.equals(
+//            "[  6  3  6  3  6  3  -1  -1  -1  -1  -1  -1  -1  -1  -1  ]"),
+//                      "BAD SMOOSH!!!  No cookie.");
+//
+//    int[] test3 = {4, 4, 4, 4, 4};
+//    System.out.println("smooshing " + stringInts(test3) + ":");
+//    smoosh(test3);
+//    result = stringInts(test3);
+//    System.out.println(result);
+//    TestHelper.verify(result.equals("[  4  -1  -1  -1  -1  ]"),
+//                      "BAD SMOOSH!!!  No cookie.");
+//
+//    int[] test4 = {0, 1, 2, 3, 4, 5, 6};
+//    System.out.println("smooshing " + stringInts(test4) + ":");
+//    smoosh(test4);
+//    result = stringInts(test4);
+//    System.out.println(result);
+//    TestHelper.verify(result.equals("[  0  1  2  3  4  5  6  ]"),
+//                      "BAD SMOOSH!!!  No cookie.");
 
 
     System.out.println("\nLet's squish linked lists!\n");

@@ -1,3 +1,5 @@
+package com.cs61b.hw3;
+
 /* SList.java */
 
 /**
@@ -112,6 +114,26 @@ public class SList {
 
   public void squish() {
     // Fill in your solution here.  (Ours is eleven lines long.)
+      if(head == null)
+      {
+          return ;
+      }
+      
+      SListNode cur = head;
+      SListNode next = head.next;
+      while (next != null)
+      {
+          if(cur.item.equals(next.item))
+          {
+              cur.next = next.next;
+              this.size--;
+          }
+          else
+          {
+              cur = next;
+          }
+          next = next.next;
+      }
   }
 
   /**
@@ -127,6 +149,19 @@ public class SList {
 
   public void twin() {
     // Fill in your solution here.  (Ours is seven lines long.)
+      if(head == null)
+      {
+          return;
+      }
+      SListNode cur = head;
+      while(cur != null)
+      {
+          SListNode copy = new SListNode(cur.item, cur.next);
+          cur.next = copy;
+          cur = copy.next;
+          this.size++;
+      }
+      
   }
 
   /**

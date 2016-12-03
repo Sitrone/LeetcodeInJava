@@ -1,0 +1,14 @@
+  public void insertFront(Object item) {
+    head = new SListNode(item, head);
+    size++;
+  }
+}
+                 SList object                    SListNode object
+                 -------------                     -------------  String object
+      -----      |     ----- |                     |     ----- |     ----------
+    x | .-+----->| size| 1 | |                     | item| .-+-+---->|  milk  |
+      -----      |     ----- |                     |     ----- |     ----------
+      -----      |     ----- |                     |     ----- |
+    y | .-+----->| head| .-+-+-------------------->| next| X | |
+      -----      |     ----- |                     |     ----- |
+                 -------------                     -------------
