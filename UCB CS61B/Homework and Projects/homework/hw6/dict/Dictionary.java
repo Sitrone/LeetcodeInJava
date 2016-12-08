@@ -1,6 +1,8 @@
 /* Dictionary.java */
 
-package dict;
+package com.cs61b.hw6.dict;
+
+import com.cs61b.hw5.InvalidNodeException;
 
 /**
  *  An interface for (unordered) dictionary ADTs.
@@ -48,9 +50,10 @@ public interface Dictionary {
    *  @param key the search key.
    *  @return an entry containing the key and an associated value, or null if
    *          no entry contains the specified key.
+ * @throws InvalidNodeException 
    **/
 
-  public Entry find(Object key);
+  public Entry find(Object key) throws InvalidNodeException;
 
   /** 
    *  Remove an entry with the specified key.  If such an entry is found,
@@ -61,14 +64,16 @@ public interface Dictionary {
    *  @param key the search key.
    *  @return an entry containing the key and an associated value, or null if
    *          no entry contains the specified key.
+ * @throws InvalidNodeException 
    */
 
-  public Entry remove(Object key);
+  public Entry remove(Object key) throws InvalidNodeException;
 
   /**
    *  Remove all entries from the dictionary.
+ * @throws InvalidNodeException 
    */
 
-  public void makeEmpty();
+  public void makeEmpty() throws InvalidNodeException;
 
 }

@@ -1,6 +1,13 @@
 /* HashTableChained.java */
 
-package dict;
+package com.cs61b.hw6.dict;
+
+import java.util.Random;
+
+import com.cs61b.hw5.DList;
+import com.cs61b.hw5.InvalidNodeException;
+import com.cs61b.hw5.List;
+import com.cs61b.hw5.ListNode;
 
 /**
  *  HashTableChained implements a Dictionary as a hash table with chaining.
@@ -19,7 +26,10 @@ public class HashTableChained implements Dictionary {
   /**
    *  Place any data fields here.
    **/
-
+    private int size;
+    private int entryNumber;
+    private List[] hashTable;
+    private int collisions = 0;
 
 
   /** 
@@ -28,18 +38,50 @@ public class HashTableChained implements Dictionary {
    *  you use a prime number, and shoot for a load factor between 0.5 and 1.)
    **/
 
-  public HashTableChained(int sizeEstimate) {
-    // Your solution here.
-  }
+    public HashTableChained(int sizeEstimate)
+    {
+        // Your solution here.
+        size = getPrimer(sizeEstimate);
+        initHashTable();
+    }
+    
+    private int getPrimer(int input)
+    {
+        for(int i = input; ;i++)
+        {
+            if(isPrimer(i)) return i;
+        }
+    }
+    
+    private boolean isPrimer(int input)
+    {
+        for(int i = 2; i < Math.sqrt(input); i++)
+        {
+            if(input % i == 0) return false;
+        }
+        return true;
+    }
 
   /** 
    *  Construct a new empty hash table with a default size.  Say, a prime in
    *  the neighborhood of 100.
    **/
 
-  public HashTableChained() {
-    // Your solution here.
-  }
+    public HashTableChained()
+    {
+        // Your solution here.
+        size = 101;
+        initHashTable();
+    }
+    
+    private void initHashTable()
+    {
+        hashTable = new DList[size];
+        for(int i = 0; i < size; i++)
+        {
+            hashTable[i] = new DList();
+        }
+    }
 
   /**
    *  Converts a hash code in the range Integer.MIN_VALUE...Integer.MAX_VALUE
@@ -49,10 +91,12 @@ public class HashTableChained implements Dictionary {
    *  should be used by insert, find, and remove.
    **/
 
-  int compFunction(int code) {
-    // Replace the following line with your solution.
-    return 88;
-  }
+    int compFunction(int code)
+    {
+        // Replace the following line with your solution.
+        int a = 3, b = 5, p = 16908799;
+        return (Math.abs((a * code + b)) % p) % hashTable.length;
+    }
 
   /** 
    *  Returns the number of entries stored in the dictionary.  Entries with
@@ -61,10 +105,11 @@ public class HashTableChained implements Dictionary {
    *  @return number of entries in the dictionary.
    **/
 
-  public int size() {
-    // Replace the following line with your solution.
-    return 0;
-  }
+    public int size()
+    {
+        // Replace the following line with your solution.
+        return entryNumber;
+    }
 
   /** 
    *  Tests if the dictionary is empty.
@@ -72,10 +117,11 @@ public class HashTableChained implements Dictionary {
    *  @return true if the dictionary has no entries; false otherwise.
    **/
 
-  public boolean isEmpty() {
-    // Replace the following line with your solution.
-    return true;
-  }
+    public boolean isEmpty()
+    {
+        // Replace the following line with your solution.
+        return entryNumber == 0;
+    }
 
   /**
    *  Create a new Entry object referencing the input key and associated value,
@@ -90,10 +136,19 @@ public class HashTableChained implements Dictionary {
    *  @return an entry containing the key and value.
    **/
 
-  public Entry insert(Object key, Object value) {
-    // Replace the following line with your solution.
-    return null;
-  }
+    public Entry insert(Object key, Object value)
+    {
+        // Replace the following line with your solution.
+        Entry entry = new Entry(key, value);
+        int bucket = compFunction(key.hashCode());
+        if(hashTable[bucket].length() != 0)
+        {
+            collisions++;
+        }
+        hashTable[bucket].insertFront(entry);
+        entryNumber++;
+        return entry;
+    }
 
   /** 
    *  Search for an entry with the specified key.  If such an entry is found,
@@ -105,12 +160,27 @@ public class HashTableChained implements Dictionary {
    *  @param key the search key.
    *  @return an entry containing the key and an associated value, or null if
    *          no entry contains the specified key.
+ * @throws InvalidNodeException 
    **/
 
-  public Entry find(Object key) {
-    // Replace the following line with your solution.
-    return null;
-  }
+    public Entry find(Object key) throws InvalidNodeException
+    {
+        // Replace the following line with your solution.
+        int bucket = compFunction(key.hashCode());
+        if(hashTable[bucket].length() != 0)
+        {
+            ListNode cur = hashTable[bucket].front();
+            while(cur.isValidNode())
+            {
+                if(((Entry)(cur.item())).key.equals(key))
+                {
+                    return (Entry) cur.item();
+                }
+                cur = cur.next();
+            }
+        }
+        return null;
+    }
 
   /** 
    *  Remove an entry with the specified key.  If such an entry is found,
@@ -123,18 +193,120 @@ public class HashTableChained implements Dictionary {
    *  @param key the search key.
    *  @return an entry containing the key and an associated value, or null if
    *          no entry contains the specified key.
+ * @throws InvalidNodeException 
    */
 
-  public Entry remove(Object key) {
-    // Replace the following line with your solution.
-    return null;
-  }
+    public Entry remove(Object key) throws InvalidNodeException
+    {
+        // Replace the following line with your solution.
+        int bucket = compFunction(key.hashCode());
+        if(hashTable[bucket].length() != 0)
+        {
+            ListNode cur = hashTable[bucket].front();
+            while(cur.isValidNode())
+            {
+                if(((Entry)(cur.item())).key.equals(key))
+                {
+                    Entry entry = (Entry) cur.item();
+                    cur.remove();
+                    entryNumber--;
+                    return entry;
+                }
+                cur = cur.next();
+            }
+        }
+        return null;
+    }
 
   /**
    *  Remove all entries from the dictionary.
+ * @throws InvalidNodeException 
    */
-  public void makeEmpty() {
-    // Your solution here.
-  }
+    public void makeEmpty() throws InvalidNodeException
+    {
+        // Your solution here.
+        for(int i = 0; i < size; i++)
+        {
+            makeBucketEmpty(hashTable[i]);
+        }
+    }
+    
+    private void makeBucketEmpty(List list) throws InvalidNodeException
+    {
+        ListNode cur = list.front(), temp;
+        while(cur.isValidNode())
+        {
+            cur = list.front();
+            temp = cur;
+            cur = cur.next();
+            temp.remove();
+            entryNumber--;
+        }
+    }
+    
+    @Override
+    public String toString()
+    {
+        String hashString = "";
+        for (int i = 0; i < size; i++)
+        {
+            if (!hashTable[i].isEmpty())
+            {
+                hashString += i + " :" + hashTable[i].length() + "\n";
+            }
+        }
+        return hashString;
+    }
+    
+    public double expectedRate() {
+        int n = entryNumber;
+        int N = size;
+        return n - N + N * Math.pow(1 - 1 / (double) N, n);
+    }
 
+    public static void main(String[] args) throws InvalidNodeException {
+        HashTableChained hash = new HashTableChained(100);
+        Random rand = new Random(1);
+        for (int i = 20; i > 0; i--) {
+            hash.insert(Math.abs(rand.nextInt()), i);
+        }
+
+        System.out.println(hash);
+        System.out.println(hash.collisions);
+        System.out.printf("%.2f", hash.expectedRate());
+        System.out.println("1".hashCode());
+        
+        HashTableChained table = new HashTableChained(100);
+        System.out.println("=====================size, isEmpty=========================");
+        System.out.println("table's size is: " + table.size());
+        System.out.println("table is Empty: " + table.isEmpty());
+        
+        System.out.println("=====================insert================================");
+        table.insert("1", "The first one");
+        table.insert("2", "The second one");
+        table.insert("3", "The third one");
+        table.insert("what", "nani?");
+        table.insert("the","Eh-heng");
+        table.insert("hell!","impolite");
+        System.out.println("table's size is: " + table.size());
+        System.out.println("table is Empty: " + table.isEmpty());
+
+        System.out.println("====================find, remove===========================");
+        Entry e1 = table.find("6");
+        if(e1 != null)
+                System.out.println("The item found is: [ " + e1.toString() + " ]");
+        else
+                System.out.println("The is no such item in the table to be found.");
+        
+        Entry e2 = table.remove("hell!");
+        if(e2 != null)
+                System.out.println("The item deleted is: [ " + e2.toString() + " ]");
+        else
+                System.out.println("The is no such item in the table to be deleted.");
+        
+        System.out.println("=====================makeEmpty=============================");
+        table.makeEmpty();
+        System.out.println(table.size());
+
+    }
 }

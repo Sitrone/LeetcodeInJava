@@ -1,6 +1,8 @@
+package com.cs61b.hw6;
 /* Homework6Test.java */
 
-import dict.*;
+import com.cs61b.hw5.InvalidNodeException;
+import com.cs61b.hw6.dict.HashTableChained;
 
 /**
  *  Initializes a hash table, then stocks it with random SimpleBoards.
@@ -28,9 +30,10 @@ public class Homework6Test {
    *  Empties the given table, then inserts "numBoards" boards into the table.
    *  @param table is the hash table to be initialized.
    *  @param numBoards is the number of random boards to place in the table.
+ * @throws InvalidNodeException 
    **/
 
-  public static void initTable(HashTableChained table, int numBoards) {
+  public static void initTable(HashTableChained table, int numBoards) throws InvalidNodeException {
     table.makeEmpty();
     for (int i = 0; i < numBoards; i++) {
       table.insert(randomBoard(), new Integer(i));
@@ -43,9 +46,10 @@ public class Homework6Test {
    *  command line.  For example:
    *
    *    java Homework6Test 12000
+ * @throws InvalidNodeException 
    **/
 
-  public static void main(String[] args) {
+  public static void main(String[] args) throws InvalidNodeException {
     int numBoards;
 
     if (args.length == 0) {
@@ -60,6 +64,8 @@ public class Homework6Test {
     // that counts the number of collisions--or better yet, also prints
     // a histograph of the number of entries in each bucket.  Call this method
     // from here.
+    String string=table.toString();
+    System.out.println(string);
   }
 
 }

@@ -1,6 +1,6 @@
 /* Entry.java */
 
-package dict;
+package com.cs61b.hw6.dict;
 
 /**
  *  A class for dictionary entries.
@@ -9,17 +9,36 @@ package dict;
  *  Dictionary ADT.
  **/
 
-public class Entry {
+public class Entry
+{
 
-  protected Object key;
-  protected Object value;
+    protected Object key;
+    protected Object value;
 
-  public Object key() {
-    return key;
-  }
+    public Entry(Object key, Object value)
+    {
+        this.key = key;
+        this.value = value;
+    }
+    
+    public Entry()
+    {
+        this(null, null);
+    }
 
-  public Object value() {
-    return value;
-  }
+    public Object key()
+    {
+        return key;
+    }
 
+    public Object value()
+    {
+        return value;
+    }
+    
+    @Override
+    public String toString()
+    {
+        return "Entry [key=" + key + ", value=" + value + "]";
+    }
 }
