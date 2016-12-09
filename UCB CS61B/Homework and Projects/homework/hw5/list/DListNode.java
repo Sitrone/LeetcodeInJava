@@ -110,6 +110,7 @@ public class DListNode extends ListNode {
         DListNode after = new DListNode(item, (DList) this.myList, this, this.next);
         this.next.prev = after;
         this.next = after;
+        this.myList.size++;
     }
 
   /**
@@ -136,6 +137,7 @@ public class DListNode extends ListNode {
         DListNode before = new DListNode(item, (DList) this.myList, this.prev, this);
         this.prev.next = before;
         this.prev = before;
+        this.myList.size++;
     }
 
   /**
@@ -160,6 +162,7 @@ public class DListNode extends ListNode {
 
         this.prev.next = next;
         this.next.prev = prev;
+        this.myList.size--;
 
         // Make this node an invalid node, so it cannot be used to corrupt
         // myList.
