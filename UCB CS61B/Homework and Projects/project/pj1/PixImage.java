@@ -1,3 +1,5 @@
+package com.cs61b.project1;
+
 /* PixImage.java */
 
 /**
@@ -22,9 +24,10 @@ public class PixImage {
    *  variables MUST be private.
    */
 
-
-
-
+    private int width;
+    private int height;
+    private Pixel[][] pixels;
+    
   /**
    * PixImage() constructs an empty PixImage with a specified width and height.
    * Every pixel has red, green, and blue intensities of zero (solid black).
@@ -34,8 +37,19 @@ public class PixImage {
    */
   public PixImage(int width, int height) {
     // Your solution here.
+      this.width = width;
+      this.height = height;
+      pixels = new Pixel[width][height];
+      
+      for(int i = 0; i < this.width; i++)
+      {
+          for(int j = 0; j < this.height; j++)
+          {
+              this.pixels[i][j] = new Pixel();
+          }
+      }
   }
-
+  
   /**
    * getWidth() returns the width of the image.
    *
@@ -43,7 +57,7 @@ public class PixImage {
    */
   public int getWidth() {
     // Replace the following line with your solution.
-    return 1;
+    return this.width;
   }
 
   /**
@@ -53,7 +67,7 @@ public class PixImage {
    */
   public int getHeight() {
     // Replace the following line with your solution.
-    return 1;
+    return this.height;
   }
 
   /**
@@ -65,7 +79,7 @@ public class PixImage {
    */
   public short getRed(int x, int y) {
     // Replace the following line with your solution.
-    return 0;
+    return pixels[x][y].red;
   }
 
   /**
@@ -77,7 +91,7 @@ public class PixImage {
    */
   public short getGreen(int x, int y) {
     // Replace the following line with your solution.
-    return 0;
+      return pixels[x][y].green;
   }
 
   /**
@@ -89,7 +103,7 @@ public class PixImage {
    */
   public short getBlue(int x, int y) {
     // Replace the following line with your solution.
-    return 0;
+      return pixels[x][y].blue;
   }
 
   /**
@@ -107,6 +121,18 @@ public class PixImage {
    */
   public void setPixel(int x, int y, short red, short green, short blue) {
     // Your solution here.
+      if(red >= 0 && red <=255)
+      {
+          pixels[x][y].red = red;
+      }
+      if(green >= 0 && green <=255)
+      {
+          pixels[x][y].green = green;
+      }
+      if(blue >= 0 && blue <=255)
+      {
+          pixels[x][y].blue = blue;
+      }
   }
 
   /**
@@ -120,7 +146,21 @@ public class PixImage {
    */
   public String toString() {
     // Replace the following line with your solution.
-    return "";
+      StringBuilder sb = new StringBuilder(1<<5);
+      for(int i = 0; i < this.width; i++)
+      {
+          sb.append("|").append(" ");
+          for(int j = 0; j < this.height; j++)
+          {
+              sb.append(pixels[i][j].red).append(" ")
+                .append(pixels[i][j].green).append(" ")
+                .append(pixels[i][j].blue).append(" ")
+                .append("|");
+                
+          }
+          sb.append("\n");
+      }
+    return sb.toString();
   }
 
   /**
@@ -154,8 +194,125 @@ public class PixImage {
    */
   public PixImage boxBlur(int numIterations) {
     // Replace the following line with your solution.
-    return this;
+      if(numIterations < 1)
+      {
+          return this;
+      }
+      
+      PixImage last = this, latest = null;
+      for(int k = 0; k < numIterations; k++)
+      {
+          latest = new PixImage(width, height);
+          for(int i = 0; i < this.width; i++)
+          {
+              for(int j = 0; j < this.height; j++)
+              {
+                  if(i == 0 && j == 0)
+                  {
+                      latest.pixels[i][j].red = (short) ((last.pixels[i][j].red + last.pixels[i+1][j].red +
+                                                      last.pixels[i][j+1].red + last.pixels[i+1][j+1].red) / 4);
+                      latest.pixels[i][j].green = (short) ((last.pixels[i][j].green + last.pixels[i+1][j].green + 
+                                                      last.pixels[i][j+1].green + last.pixels[i+1][j+1].green) / 4);
+                      latest.pixels[i][j].blue = (short) ((last.pixels[i][j].blue + last.pixels[i+1][j].blue + 
+                                                      last.pixels[i][j+1].blue + last.pixels[i+1][j+1].blue) / 4);
+                  }
+                  else if(i == 0 && j == this.height - 1)
+                  {
+                      latest.pixels[i][j].red = (short)((last.pixels[i][j].red + last.pixels[i+1][j].red + 
+                                                     last.pixels[i][j-1].red + last.pixels[i+1][j-1].red) / 4);
+                      latest.pixels[i][j].green = (short)((last.pixels[i][j].green + last.pixels[i+1][j].green + 
+                                                     last.pixels[i][j-1].green + last.pixels[i+1][j-1].green) / 4);
+                      latest.pixels[i][j].blue = (short)((last.pixels[i][j].blue + last.pixels[i+1][j].blue + 
+                                                     last.pixels[i][j-1].blue + last.pixels[i+1][j-1].blue) / 4);
+                  }
+                  else if(i == this.width - 1 && j == 0)
+                  {
+                      latest.pixels[i][j].red = (short)((last.pixels[i][j].red + last.pixels[i-1][j].red + 
+                                                     last.pixels[i][j+1].red + last.pixels[i-1][j+1].red) / 4);
+                      latest.pixels[i][j].green = (short)((last.pixels[i][j].green + last.pixels[i-1][j].green + 
+                                                     last.pixels[i][j+1].green + last.pixels[i-1][j+1].green) / 4);
+                      latest.pixels[i][j].blue = (short)((last.pixels[i][j].blue + last.pixels[i-1][j].blue + 
+                                                     last.pixels[i][j+1].blue + last.pixels[i-1][j+1].blue) / 4);
+                  }
+                  else if(i == this.width - 1 && j == this.height - 1)
+                  {
+                      latest.pixels[i][j].red = (short)((last.pixels[i][j].red + last.pixels[i-1][j].red + 
+                                                     last.pixels[i][j-1].red + last.pixels[i-1][j-1].red) / 4);
+                      latest.pixels[i][j].green = (short)((last.pixels[i][j].green + last.pixels[i-1][j].green + 
+                                                     last.pixels[i][j-1].green + last.pixels[i-1][j-1].green) / 4);
+                      latest.pixels[i][j].blue = (short)((last.pixels[i][j].blue + last.pixels[i-1][j].blue + 
+                                                     last.pixels[i][j-1].blue + last.pixels[i-1][j-1].blue) / 4);
+                  }
+                  else if(i == 0 && (j > 0 && j < this.height - 1))
+                  {
+                      latest.pixels[i][j].red = (short)((last.pixels[i][j].red + last.pixels[i][j-1].red + last.pixels[i][j+1].red + 
+                                                     last.pixels[i+1][j].red + last.pixels[i+1][j-1].red + last.pixels[i+1][j+1].red) / 6);
+                      latest.pixels[i][j].green = (short)((last.pixels[i][j].green + last.pixels[i][j-1].green + last.pixels[i][j+1].green + 
+                                                     last.pixels[i+1][j].green + last.pixels[i+1][j-1].green + last.pixels[i+1][j+1].green) / 6);
+                      latest.pixels[i][j].blue = (short)((last.pixels[i][j].blue + last.pixels[i][j-1].blue + last.pixels[i][j+1].blue + 
+                                                     last.pixels[i+1][j].blue + last.pixels[i+1][j-1].blue + last.pixels[i+1][j+1].blue) / 6);
+                  }
+                  else if(i == this.width - 1 && (j > 0 && j < this.height - 1))
+                  {
+                      latest.pixels[i][j].red = (short)((last.pixels[i][j].red + last.pixels[i][j-1].red + last.pixels[i][j+1].red + 
+                                                     last.pixels[i-1][j].red + last.pixels[i-1][j-1].red + last.pixels[i-1][j+1].red) / 6);
+                      latest.pixels[i][j].green = (short)((last.pixels[i][j].green + last.pixels[i][j-1].green + last.pixels[i][j+1].green + 
+                                                     last.pixels[i-1][j].green + last.pixels[i-1][j-1].green + last.pixels[i-1][j+1].green) / 6);
+                      latest.pixels[i][j].blue = (short)((last.pixels[i][j].blue + last.pixels[i][j-1].blue + last.pixels[i][j+1].blue + 
+                                                     last.pixels[i-1][j].blue + last.pixels[i-1][j-1].blue + last.pixels[i-1][j+1].blue) / 6);
+                  }
+                  else if((i > 0 && i < this.width - 1) && j == 0)
+                  {
+                      latest.pixels[i][j].red = (short)((last.pixels[i][j].red + last.pixels[i+1][j].red + last.pixels[i-1][j].red + 
+                                                     last.pixels[i][j+1].red + last.pixels[i-1][j+1].red + last.pixels[i+1][j+1].red) / 6);
+                      latest.pixels[i][j].green = (short)((last.pixels[i][j].green + last.pixels[i+1][j].green + last.pixels[i-1][j].green + 
+                                                     last.pixels[i][j+1].green + last.pixels[i-1][j+1].green + last.pixels[i+1][j+1].green) / 6);
+                      latest.pixels[i][j].blue = (short)((last.pixels[i][j].blue + last.pixels[i+1][j].blue + last.pixels[i-1][j].blue + 
+                                                     last.pixels[i][j+1].blue + last.pixels[i-1][j+1].blue + last.pixels[i+1][j+1].blue) / 6);
+                  }
+                  else if((i > 0 && i < this.width - 1) && j == this.height - 1)
+                  {
+                      latest.pixels[i][j].red = (short)((last.pixels[i][j].red + last.pixels[i+1][j].red + last.pixels[i-1][j].red + 
+                                                     last.pixels[i][j-1].red + last.pixels[i-1][j-1].red + last.pixels[i+1][j-1].red) / 6);
+                      latest.pixels[i][j].green = (short)((last.pixels[i][j].green + last.pixels[i+1][j].green + last.pixels[i-1][j].green + 
+                                                     last.pixels[i][j-1].green  + last.pixels[i-1][j-1].green + last.pixels[i+1][j-1].green) / 6);
+                      latest.pixels[i][j].blue = (short)((last.pixels[i][j].blue + last.pixels[i+1][j].blue + last.pixels[i-1][j].blue + 
+                                                     last.pixels[i][j-1].blue + last.pixels[i-1][j-1].blue + last.pixels[i+1][j-1].blue) / 6);
+                  }
+                  else
+                  {
+                      latest.pixels[i][j].red = (short)((last.pixels[i][j].red   + last.pixels[i-1][j].red   + last.pixels[i+1][j].red + 
+                                                     last.pixels[i][j-1].red + last.pixels[i-1][j-1].red + last.pixels[i+1][j-1].red + 
+                                                     last.pixels[i][j+1].red + last.pixels[i-1][j+1].red + last.pixels[i+1][j+1].red) / 9);
+                      latest.pixels[i][j].green = (short)((last.pixels[i][j].green   + last.pixels[i-1][j].green   + last.pixels[i+1][j].green + 
+                                                     last.pixels[i][j-1].green + last.pixels[i-1][j-1].green + last.pixels[i+1][j-1].green + 
+                                                     last.pixels[i][j+1].green + last.pixels[i-1][j+1].green + last.pixels[i+1][j+1].green) / 9);
+                      latest.pixels[i][j].blue = (short)((last.pixels[i][j].blue   + last.pixels[i-1][j].blue   + last.pixels[i+1][j].blue + 
+                                                     last.pixels[i][j-1].blue + last.pixels[i-1][j-1].blue + last.pixels[i+1][j-1].blue + 
+                                                     last.pixels[i][j+1].blue + last.pixels[i-1][j+1].blue + last.pixels[i+1][j+1].blue) / 9);
+                  }
+              }
+          }
+          last = latest;
+      }
+      return latest;
   }
+  
+  @Override
+  public PixImage clone() {
+        PixImage clone = new PixImage(this.width, this.height);
+        for (int i = 0; i < this.width; i++)
+        {
+            for (int j = 0; j < this.height; j++)
+            {
+                clone.pixels[i][j].red = this.pixels[i][j].red;
+                clone.pixels[i][j].green = this.pixels[i][j].green;
+                clone.pixels[i][j].blue = this.pixels[i][j].blue;
+            }
+        }
+        return clone;
+  }
+
 
   /**
    * mag2gray() maps an energy (squared vector magnitude) in the range
@@ -169,18 +326,23 @@ public class PixImage {
    * intensity we want to compute.
    * @return the intensity of the output pixel.
    */
-  private static short mag2gray(long mag) {
-    short intensity = (short) (30.0 * Math.log(1.0 + (double) mag) - 256.0);
+    private static short mag2gray(long mag)
+    {
+        short intensity = (short) (30.0 * Math.log(1.0 + (double) mag) - 256.0);
 
-    // Make sure the returned intensity is in the range 0...255, regardless of
-    // the input value.
-    if (intensity < 0) {
-      intensity = 0;
-    } else if (intensity > 255) {
-      intensity = 255;
+        // Make sure the returned intensity is in the range 0...255, regardless
+        // of
+        // the input value.
+        if (intensity < 0)
+        {
+            intensity = 0;
+        }
+        else if (intensity > 255)
+        {
+            intensity = 255;
+        }
+        return intensity;
     }
-    return intensity;
-  }
 
   /**
    * sobelEdges() applies the Sobel operator, identifying edges in "this"
@@ -197,13 +359,109 @@ public class PixImage {
    * @return a grayscale PixImage representing the edges of the input image.
    * Whiter pixels represent stronger edges.
    */
-  public PixImage sobelEdges() {
-    // Replace the following line with your solution.
-    return this;
-    // Don't forget to use the method mag2gray() above to convert energies to
-    // pixel intensities.
-  }
-
+    public PixImage sobelEdges()
+    {
+        // Replace the following line with your solution.
+        PixImage edgeImage = new PixImage(this.width, this.height);
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                edgeImage.pixels[x][y] = this.sobelSquare(x, y);
+            }
+          }
+        return edgeImage;
+    }
+    
+//            Gx = (-1)*f(x-1, y-1) + 0*f(x,y-1) + 1*f(x+1,y-1)
+//        
+//            +(-2)*f(x-1,y) + 0*f(x,y)+2*f(x+1,y)
+//        
+//            +(-1)*f(x-1,y+1) + 0*f(x,y+1) + 1*f(x+1,y+1)
+//        
+//            = [f(x+1,y-1)+2*f(x+1,y)+f(x+1,y+1)]-[f(x-1,y-1)+2*f(x-1,y)+f(x-1,y+1)]
+//        
+//        
+//        
+//        Gy =1* f(x-1, y-1) + 2*f(x,y-1)+ 1*f(x+1,y-1)
+//        
+//            +0*f(x-1,y) 0*f(x,y) + 0*f(x+1,y)
+//        
+//            +(-1)*f(x-1,y+1) + (-2)*f(x,y+1) + (-1)*f(x+1, y+1)
+//        
+//            = [f(x-1,y-1) + 2f(x,y-1) + f(x+1,y-1)]-[f(x-1, y+1) + 2*f(x,y+1)+f(x+1,y+1)]
+//        
+//                    其中f(a,b), 表示图像(a,b)点的灰度值；
+    
+    private Pixel sobelSquare(int x, int y) {
+        int gxr = 0, gxg = 0, gxb = 0;
+        int gyr = 0, gyg = 0, gyb = 0;
+        
+        gxr = reflect(x - 1, y - 1).red + (2 * reflect(x - 1, y).red) +
+              reflect(x - 1, y + 1).red - reflect(x + 1, y - 1).red -
+            (2 * reflect(x + 1, y).red) - reflect(x + 1, y + 1).red;
+        
+        gxg = reflect(x - 1, y - 1).green + (2 * reflect(x - 1, y).green) +
+              reflect(x - 1, y + 1).green - reflect(x + 1, y - 1).green -
+            (2 * reflect(x + 1, y).green) - reflect(x + 1, y + 1).green;
+        
+        gxb = reflect(x - 1, y - 1).blue + (2 * reflect(x - 1, y).blue) +
+              reflect(x - 1, y + 1).blue - reflect(x + 1, y - 1).blue -
+            (2 * reflect(x + 1, y).blue) - reflect(x + 1, y + 1).blue;
+        
+        gyr = reflect(x - 1, y - 1).red + (2 * reflect(x, y - 1).red) +
+              reflect(x + 1, y - 1).red - reflect(x - 1, y + 1).red -
+            (2 * reflect(x, y + 1).red) - reflect(x + 1, y + 1).red;
+        
+        gyg = reflect(x - 1, y - 1).green + (2 * reflect(x, y - 1).green) +
+              reflect(x + 1, y - 1).green - reflect(x - 1, y + 1).green -
+            (2 * reflect(x, y + 1).green) - reflect(x + 1, y + 1).green;
+        
+        gyb = reflect(x - 1, y - 1).blue + (2 * reflect(x, y - 1).blue) +
+              reflect(x + 1, y - 1).blue - reflect(x - 1, y + 1).blue -
+            (2 * reflect(x, y + 1).blue) - reflect(x + 1, y + 1).blue;
+        
+        long energy = gxr * gxr + gxg * gxg + gxb * gxb +
+                      gyr * gyr + gyg * gyg + gyb * gyb;
+        short gray = mag2gray(energy);
+        return new Pixel(gray, gray, gray);
+      }
+    
+    
+    private Pixel reflect(int x, int y)
+    {
+        if (x < 0 && y < 0)
+        {
+            return pixels[0][0];
+        }
+        if (x < 0 && y >= height)
+        {
+            return pixels[0][height - 1];
+        }
+        if (x >= width && y < 0)
+        {
+            return pixels[width - 1][0];
+        }
+        if (x >= width && y >= height)
+        {
+            return pixels[width - 1][height - 1];
+        }
+        if (x < 0)
+        {
+            return pixels[0][y];
+        }
+        if (x >= width)
+        {
+            return pixels[width - 1][y];
+        }
+        if (y < 0)
+        {
+            return pixels[x][0];
+        }
+        if (y >= height)
+        {
+            return pixels[x][height - 1];
+        }
+        return pixels[x][y];
+    }
 
   /**
    * TEST CODE:  YOU DO NOT NEED TO FILL IN ANY METHODS BELOW THIS POINT.
@@ -240,10 +498,13 @@ public class PixImage {
     int height = pixels[0].length;
     PixImage image = new PixImage(width, height);
 
-    for (int x = 0; x < width; x++) {
-      for (int y = 0; y < height; y++) {
-        image.setPixel(x, y, (short) pixels[x][y], (short) pixels[x][y],
-                       (short) pixels[x][y]);
+    for (int x = 0; x < width; x++) 
+    {
+      for (int y = 0; y < height; y++) 
+      {
+        image.setPixel(x, y, (short) pixels[x][y], 
+                             (short) pixels[x][y],
+                             (short) pixels[x][y]);
       }
     }
 

@@ -1,3 +1,5 @@
+package com.cs61b.project1;
+
 /* Blur.java */
 
 /* DO NOT CHANGE THIS FILE. */

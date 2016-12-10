@@ -1,3 +1,5 @@
+package com.cs61b.project1;
+
 /* ImageUtils.java */
 
 /* DO NOT CHANGE THIS FILE. */

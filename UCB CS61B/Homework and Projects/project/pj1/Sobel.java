@@ -1,3 +1,5 @@
+package com.cs61b.project1;
+
 /* Sobel.java */
 
 /* DO NOT CHANGE THIS FILE. */
