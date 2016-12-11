@@ -1,5 +1,7 @@
 package com.cs61b.project1;
 
+import java.io.File;
+
 /* Sobel.java */
 
 /* DO NOT CHANGE THIS FILE. */
@@ -104,30 +106,44 @@ public class Sobel {
    *  @param args the usual array of command-line argument Strings.
    */
   public static void main(String[] args) {
-    if (args.length == 0) {
-      System.out.println("usage:  java Sobel imagefile [iterations] [RLE]");
-      System.out.println("  imagefile is an image in TIFF format.");
-      System.out.println("  interations is the number of blurring iterations" +
-                         " (default 0).");
-      System.out.println("  any third argument (RLE) turns on run-length " +
-                         "encoding in the output file");
-      System.out.println("The grayscale-edge image is written to " +
-                         "edge_imagefile.");
-      System.out.println("If blurring is selected, " +
-                         "the blurred image is written to blur_imagefile.");
-      System.exit(0);
-    }
+      String path = System.getProperty("user.dir") + File.separator + "conf" + File.separator;
+      
+      File file = new File(path);
+      File[] files = file.listFiles();
+      
+      for(File f : files)
+      {
+          if(f.isFile() && f.toString().endsWith("tiff"))
+          {
+              args = new String[]{f.toString()};
+              if (args.length == 0) {
+                  System.out.println("usage:  java Sobel imagefile [iterations] [RLE]");
+                  System.out.println("  imagefile is an image in TIFF format.");
+                  System.out.println("  interations is the number of blurring iterations" +
+                                     " (default 0).");
+                  System.out.println("  any third argument (RLE) turns on run-length " +
+                                     "encoding in the output file");
+                  System.out.println("The grayscale-edge image is written to " +
+                                     "edge_imagefile.");
+                  System.out.println("If blurring is selected, " +
+                                     "the blurred image is written to blur_imagefile.");
+                  System.exit(0);
+                }
 
-    int numIterations = 0;
-    if (args.length >= 2) {
-      try {
-        numIterations = Integer.parseInt(args[1]);
-      } catch (NumberFormatException ex) {
-        System.err.println("The second argument must be a number.");
-        System.exit(1);
+                int numIterations = 0;
+                if (args.length >= 2) {
+                  try {
+                    numIterations = Integer.parseInt(args[1]);
+                  } catch (NumberFormatException ex) {
+                    System.err.println("The second argument must be a number.");
+                    System.exit(1);
+                  }
+                }
+
+                sobelFile(args[0], numIterations, args.length >= 3);
+          }
+          
       }
-    }
 
-    sobelFile(args[0], numIterations, args.length >= 3);
   }
 }

@@ -45,7 +45,8 @@ public class Test {
   private static ObjectOutputStream os;
 
   private static void init() throws FileNotFoundException, IOException {
-    File file = new File("data.gz");
+    String path = System.getProperty("user.dir") + File.separator + "conf" + File.separator;
+    File file = new File(path + "data.gz");
     if (WRITE_MODE) {
       if (file.exists())  // Let's make it hard to overwrite the data.
         throw new RuntimeException("Please delete " + file.getAbsolutePath());

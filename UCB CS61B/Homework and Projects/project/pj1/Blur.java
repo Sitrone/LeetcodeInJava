@@ -1,5 +1,7 @@
 package com.cs61b.project1;
 
+import java.io.File;
+
 /* Blur.java */
 
 /* DO NOT CHANGE THIS FILE. */
@@ -66,25 +68,37 @@ public class Blur {
    *  @param args the usual array of command-line argument Strings.
    */
   public static void main(String[] args) {
-    if (args.length == 0) {
-      System.out.println("usage:  java Blur imagefile [iterations]");
-      System.out.println("  imagefile is an image in TIFF format.");
-      System.out.println("  interations is the number of blurring iterations" +
-                         " (default 1).");
-      System.out.println("The blurred image is written to blur_imagefile.");
-      System.exit(0);
-    }
+      String path = System.getProperty("user.dir") + File.separator + "conf" + File.separator;
+      
+      File file = new File(path);
+      File[] files = file.listFiles();
+      for(File f : files)
+      {
+          if(f.isFile() && f.toString().endsWith("tiff"))
+          {
+              args = new String[]{f.toString(), "20"};
+              if (args.length == 0) {
+                System.out.println("usage:  java Blur imagefile [iterations]");
+                System.out.println("  imagefile is an image in TIFF format.");
+                System.out.println("  interations is the number of blurring iterations" +
+                                   " (default 1).");
+                System.out.println("The blurred image is written to blur_imagefile.");
+                System.exit(0);
+              }
 
-    int numIterations = 1;
-    if (args.length > 1) {
-      try {
-        numIterations = Integer.parseInt(args[1]);
-      } catch (NumberFormatException ex) {
-        System.err.println("The second argument must be a number.");
-        System.exit(1);
+              int numIterations = 1;
+              if (args.length > 1) {
+                try {
+                  numIterations = Integer.parseInt(args[1]);
+                } catch (NumberFormatException ex) {
+                  System.err.println("The second argument must be a number.");
+                  System.exit(1);
+                }
+              }
+
+              blurFile(args[0], numIterations);
+            } 
+          }
       }
-    }
 
-    blurFile(args[0], numIterations);
-  }
 }
