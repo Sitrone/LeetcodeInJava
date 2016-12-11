@@ -25,6 +25,8 @@ import java.util.Random;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
+import com.cs61b.hw5.InvalidNodeException;
+
 public class Test {
 
   // This should be true when we generate 
@@ -338,7 +340,7 @@ public class Test {
   }
 
   private static void runTests() throws FileNotFoundException, IOException,
-                                        ClassNotFoundException {
+                                        ClassNotFoundException, InvalidNodeException {
     BufferedImage goodImage;
     BufferedImage prevImage;
     PixImage studentImage;

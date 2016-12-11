@@ -105,6 +105,11 @@ public class PixImage {
     // Replace the following line with your solution.
       return pixels[x][y].blue;
   }
+  
+  public Pixel getPixel(int x, int y)
+  {
+      return pixels[x][y];
+  }
 
   /**
    * setPixel() sets the pixel at coordinate (x, y) to specified red, green,
@@ -363,11 +368,13 @@ public class PixImage {
     {
         // Replace the following line with your solution.
         PixImage edgeImage = new PixImage(this.width, this.height);
-        for (int x = 0; x < width; x++) {
-            for (int y = 0; y < height; y++) {
+        for (int x = 0; x < width; x++)
+        {
+            for (int y = 0; y < height; y++)
+            {
                 edgeImage.pixels[x][y] = this.sobelSquare(x, y);
             }
-          }
+        }
         return edgeImage;
     }
     
@@ -477,13 +484,17 @@ public class PixImage {
    * @param b the condition to check.
    * @param msg the error message to print if the condition is false.
    */
-  private static void doTest(boolean b, String msg) {
-    if (b) {
-      System.out.println("Good.");
-    } else {
-      System.err.println(msg);
+    private static void doTest(boolean b, String msg)
+    {
+        if (b)
+        {
+            System.out.println("Good.");
+        }
+        else
+        {
+            System.err.println(msg);
+        }
     }
-  }
 
   /**
    * array2PixImage() converts a 2D array of grayscale intensities to
@@ -493,23 +504,24 @@ public class PixImage {
    * @return a new PixImage whose red, green, and blue values are equal to
    * the input grayscale intensities.
    */
-  private static PixImage array2PixImage(int[][] pixels) {
-    int width = pixels.length;
-    int height = pixels[0].length;
-    PixImage image = new PixImage(width, height);
-
-    for (int x = 0; x < width; x++) 
+    private static PixImage array2PixImage(int[][] pixels)
     {
-      for (int y = 0; y < height; y++) 
-      {
-        image.setPixel(x, y, (short) pixels[x][y], 
-                             (short) pixels[x][y],
-                             (short) pixels[x][y]);
-      }
-    }
+        int width = pixels.length;
+        int height = pixels[0].length;
+        PixImage image = new PixImage(width, height);
 
-    return image;
-  }
+        for (int x = 0; x < width; x++)
+        {
+            for (int y = 0; y < height; y++)
+            {
+                image.setPixel(x, y, (short) pixels[x][y], 
+                                     (short) pixels[x][y], 
+                                     (short) pixels[x][y]);
+            }
+        }
+
+        return image;
+    }
 
   /**
    * equals() checks whether two images are the same, i.e. have the same

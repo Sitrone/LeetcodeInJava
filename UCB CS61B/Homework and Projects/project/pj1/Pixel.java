@@ -11,6 +11,11 @@ public class Pixel
         this((short)0, (short)0, (short)0);
     }
     
+    public Pixel(Pixel pixel)
+    {
+        this(pixel.red, pixel.green, pixel.blue);
+    }
+    
     public Pixel(short red, short green, short blue)
     {
         this.red = red;
@@ -66,6 +71,6 @@ public class Pixel
     @Override
     public String toString()
     {
-        return "Pixel [red=" + red + ", green=" + green + ", blue=" + blue + "]";
+        return "[red=" + red + ", green=" + green + ", blue=" + blue + "]";
     }
 }

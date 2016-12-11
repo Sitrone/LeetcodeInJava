@@ -31,6 +31,9 @@ package com.cs61b.project1;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
+import com.cs61b.hw5.DListNode;
+import com.cs61b.hw5.InvalidNodeException;
+
 @SuppressWarnings("rawtypes")
 public class RunIterator implements Iterator {
 
@@ -39,7 +42,7 @@ public class RunIterator implements Iterator {
    *  These variables MUST be private.
    */
 
-
+    DListNode curRun;
 
 
   /**
@@ -56,8 +59,10 @@ public class RunIterator implements Iterator {
   // constructor that you want so that your RunLengthEncoding.iterator()
   // implementation can construct a RunIterator that points to the first run of
   // the encoding.
-  RunIterator() {
+  RunIterator(DListNode node) 
+  {
     // Your solution here.  You may add parameters to the method signature.
+      curRun = node;
   }
 
   /**
@@ -68,7 +73,7 @@ public class RunIterator implements Iterator {
    */
   public boolean hasNext() {
     // Replace the following line with your solution.
-    return false;
+    return curRun.isValidNode();
   }
 
   /**
@@ -92,14 +97,25 @@ public class RunIterator implements Iterator {
    *  of your RunLengthEncoding data structure!  It must be freshly constructed
    *  for the sole purpose of returning four ints.
    */
-  public int[] next() {
-    // Construct a new array of 4 ints, fill in its values, and return it.
-    // Don't forget to advance the RunIterator's pointer so that the next
-    // call to next() will return the subsequent run.
+    public int[] next()
+    {
+        // Construct a new array of 4 ints, fill in its values, and return it.
+        // Don't forget to advance the RunIterator's pointer so that the next
+        // call to next() will return the subsequent run.
 
-    // Replace the following line with your solution.
-    return new int[4];
-  }
+        // Replace the following line with your solution.
+        int[] cur = new int[4];
+        try
+        {
+            cur = ((Run) curRun.item()).getRun();
+            curRun = (DListNode) curRun.next();
+        }
+        catch (InvalidNodeException e)
+        {
+            e.printStackTrace();
+        }
+        return cur;
+    }
 
   /**
    *  remove() would remove from the underlying run-length encoding the run
