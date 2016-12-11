@@ -31,6 +31,7 @@ public class Test {
 
   // This should be true when we generate 
   private static final boolean WRITE_MODE = false;
+  private static final String PATH = System.getProperty("user.dir") + File.separator + "conf" + File.separator;
   
   // The maximum number of rows/columns/lines we should print.
   // Change this to Integer.MAX_VALUE to print everything.
@@ -45,8 +46,7 @@ public class Test {
   private static ObjectOutputStream os;
 
   private static void init() throws FileNotFoundException, IOException {
-    String path = System.getProperty("user.dir") + File.separator + "conf" + File.separator;
-    File file = new File(path + "data.gz");
+    File file = new File(PATH + "data.gz");
     if (WRITE_MODE) {
       if (file.exists())  // Let's make it hard to overwrite the data.
         throw new RuntimeException("Please delete " + file.getAbsolutePath());
@@ -453,7 +453,7 @@ public class Test {
 
     try {
       System.out.println("  Reading feathers.tiff.");
-      studentImage = ImageUtils.readTIFFPix("feathers.tiff");
+      studentImage = ImageUtils.readTIFFPix(PATH + "feathers.tiff");
     } catch (IllegalArgumentException e) {
       System.out.println("Cannot read feathers.tiff.  Exiting.");
       System.exit(1);
@@ -592,7 +592,7 @@ public class Test {
 
     try {
       System.out.println("  Reading highcontrast.tiff.");
-      studentImage = ImageUtils.readTIFFPix("highcontrast.tiff");
+      studentImage = ImageUtils.readTIFFPix(PATH + "highcontrast.tiff");
     } catch (IllegalArgumentException e) {
       System.out.println("Cannot read highcontrast.tiff.  Exiting.");
       System.exit(1);
