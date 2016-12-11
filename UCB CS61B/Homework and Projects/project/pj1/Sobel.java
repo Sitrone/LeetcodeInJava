@@ -73,7 +73,10 @@ public class Sobel {
     System.out.println("Performing Sobel edge detection on image file.");
     PixImage sobeled = blurred.sobelEdges();
 
-    String edgename = "edge_" + filename;
+    File file = new File(filename);
+    String path = file.getAbsolutePath();
+    int endIndexDot = path.lastIndexOf('.');
+    String edgename = path.substring(0, endIndexDot) + "_edge" + ".tiff";
     System.out.println("Writing grayscale-edge image file " + edgename);
     TIFFEncoder.writeTIFF(sobeled, edgename);
     if (rle) {

@@ -47,7 +47,10 @@ public class Blur {
     System.out.println("Blurring image file.");
     PixImage blurred = image.boxBlur(numIterations);
 
-    String blurname = "blur_" + filename;
+    File file = new File(filename);
+    String path = file.getAbsolutePath();
+    int endIndexDot = path.lastIndexOf('.');
+    String blurname =  path.substring(0, endIndexDot) + "_blur" + ".tiff";
     System.out.println("Writing blurred image file " + blurname);
     TIFFEncoder.writeTIFF(blurred, blurname);
     /*
