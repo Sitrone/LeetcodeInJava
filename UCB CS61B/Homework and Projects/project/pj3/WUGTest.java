@@ -1,10 +1,7 @@
-/* WUGTest.java */
+package com.cs61b.project3;
 
-/**
- * The WUGTest class tests the WUGraph class.
- */
-
-import graph.*;
+import com.cs61b.project3.graph.Neighbors;
+import com.cs61b.project3.graph.WUGraph;
 
 public class WUGTest {
 

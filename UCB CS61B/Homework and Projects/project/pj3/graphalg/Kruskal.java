@@ -1,9 +1,8 @@
 /* Kruskal.java */
 
-package graphalg;
+package com.cs61b.project3.graphalg;
 
-import graph.*;
-import set.*;
+import com.cs61b.project3.graph.WUGraph;
 
 /**
  * The Kruskal class contains the method minSpanTree(), which implements

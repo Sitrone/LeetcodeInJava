@@ -3,7 +3,7 @@
 /* DO NOT CHANGE THIS FILE. */
 /* YOUR SUBMISSION MUST WORK CORRECTLY WITH _OUR_ COPY OF THIS FILE. */
 
-package graph;
+package com.cs61b.project3.graph;
 
 /**
  * The Neighbors class is provided solely as a way to allow the method
@@ -14,7 +14,8 @@ package graph;
  * data, all fields are public.
  */
 
-public class Neighbors {
-  public Object[] neighborList;
-  public int[] weightList;
+public class Neighbors
+{
+    public Object[] neighborList;
+    public int[] weightList;
 }
