@@ -1,7 +1,10 @@
+package com.cs61b.hw9;
+
 /* Maze.java */
 
 import java.util.*;
-import set.*;
+
+import com.cs61b.hw9.set.DisjointSets;
 
 /**
  *  The Maze class represents a maze in a rectangular grid.  There is exactly
@@ -16,6 +19,8 @@ public class Maze {
   // Horizontal and vertical interior walls; each is true if the wall exists.
   protected boolean[][] hWalls;
   protected boolean[][] vWalls;
+  
+  protected DisjointSets mazeSet;
 
   // Object for generting random numbers.
   private static Random random;
@@ -23,7 +28,7 @@ public class Maze {
   // Constants used in depth-first search (which checks for cycles in the
   // maze).
   private static final int STARTHERE = 0;
-  private static final int FROMLEFT = 1;
+  private static final int FROMLEFT  = 1;
   private static final int FROMRIGHT = 2;
   private static final int FROMABOVE = 3;
   private static final int FROMBELOW = 4;
@@ -35,52 +40,170 @@ public class Maze {
    *  structure is used to ensure that there is only one path between any two
    *  cells.
    **/
-  public Maze(int horizontalSize, int verticalSize) {
-    int i, j;
+    public Maze(int horizontalSize, int verticalSize)
+    {
+        int i, j;
 
-    horiz = horizontalSize;
-    vert = verticalSize;
-    if ((horiz < 1) || (vert < 1) || ((horiz == 1) && (vert == 1))) {
-      return;                                    // There are no interior walls
-    }
-
+        horiz = horizontalSize;
+        vert = verticalSize;
+        if ((horiz < 1) || (vert < 1) || ((horiz == 1) && (vert == 1)))
+        {
+            return; // There are no interior walls
+        }
+    
     // Create all of the horizontal interior walls.  Initially, every
     // horizontal wall exists; they will be removed later by the maze
     // generation algorithm.
-    if (vert > 1) {
-      hWalls = new boolean[horiz][vert - 1];
-      for (j = 0; j < vert - 1; j++) {
-        for (i = 0; i < horiz; i++) {
-          hWalls[i][j] = true;
+        if (vert > 1)
+        {
+            hWalls = new boolean[horiz][vert - 1];
+            for (j = 0; j < vert - 1; j++)
+            {
+                for (i = 0; i < horiz; i++)
+                {
+                    hWalls[i][j] = true;
+                }
+            }
         }
-      }
-    }
     // Create all of the vertical interior walls.
-    if (horiz > 1) {
-      vWalls = new boolean[horiz - 1][vert];
-      for (i = 0; i < horiz - 1; i++) {
-        for (j = 0; j < vert; j++) {
-          vWalls[i][j] = true;
+        if (horiz > 1)
+        {
+            vWalls = new boolean[horiz - 1][vert];
+            for (i = 0; i < horiz - 1; i++)
+            {
+                for (j = 0; j < vert; j++)
+                {
+                    vWalls[i][j] = true;
+                }
+            }
         }
-      }
+
+
+        /**
+         * Fill in the rest of this method. You should go through all the walls
+         * of the maze in random order, and remove any wall whose removal will
+         * not create a cycle. Use the implementation of disjoint sets provided
+         * in the set package to avoid creating any cycles.
+         *
+         * Note the method randInt() further below, which generates a random
+         * integer. randInt() generates different numbers every time the program
+         * is run, so that you can make lots of different mazes.
+         **/
+        
+        mazeSet = new DisjointSets(horiz * vert);
+        int hTotalWalls = hWalls.length * hWalls[0].length;
+        int vTotalWalls = vWalls.length * vWalls[0].length;
+        
+        int[] hWallsIndexArr = new int[hTotalWalls];
+        int[] vWallsIndexArr = new int[vTotalWalls];
+
+        initArr(hWallsIndexArr);
+        initArr(vWallsIndexArr);
+
+        shuffle(hWallsIndexArr);
+        shuffle(vWallsIndexArr);
+        
+        int hWallsIndex = 0, vWallsIndex = 0;
+        
+        while(hWallsIndex != hTotalWalls)
+        {
+            int hWallx = hWallsIndexArr[hWallsIndex] % horizontalSize;
+            int hWally = hWallsIndexArr[hWallsIndex] / horizontalSize;
+            checkHWall(hWallx, hWally);
+            hWallsIndex++;
+        }
+        while(vWallsIndex != vTotalWalls)
+        {
+            int vWallx = vWallsIndexArr[vWallsIndex] % (horizontalSize - 1);
+            int vWally = vWallsIndexArr[vWallsIndex] / (horizontalSize - 1);
+            checkVWall(vWallx, vWally);
+            vWallsIndex++;
+        }
+//        while(hWallsIndex != hTotalWalls || vWallsIndex != vTotalWalls)
+//        {
+//            int direction = randInt(2);
+//            switch(direction)
+//            {
+//            case 0:
+//                if(hWallsIndex == hTotalWalls)
+//                {
+//                    continue;
+//                }
+//                else
+//                {
+//                    int hWallx = hWallsIndexArr[hWallsIndex] % horizontalSize;
+//                    int hWally = hWallsIndexArr[hWallsIndex] / horizontalSize;
+//                    checkHWall(hWallx, hWally);
+//                    hWallsIndex++;
+//                }
+//                break;
+//            case 1:
+//                if(vWallsIndex == vTotalWalls)
+//                {
+//                    continue;
+//                }
+//                else
+//                {
+//                    int vWallx = vWallsIndexArr[vWallsIndex] % (horizontalSize - 1);
+//                    int vWally = vWallsIndexArr[vWallsIndex] / (horizontalSize - 1);
+//                    checkVWall(vWallx, vWally);
+//                    vWallsIndex++;
+//                }
+//                break;
+//            }
+//        }
+        
+    }
+    
+    private void checkHWall(int x, int y)
+    {
+        if(isConnected(x, y, x, y + 1)) return ;
+        this.hWalls[x][y] = false;
+        unionCell(x, y, x, y + 1);
+    }
+    
+    private void checkVWall(int x, int y)
+    {
+        if(isConnected(x, y, x + 1, y)) return ;
+        this.vWalls[x][y] = false;
+        unionCell(x, y, x + 1, y);
+    }
+    
+    private void unionCell(int x1, int y1, int x2, int y2)
+    {
+        int root1 = this.mazeSet.find(x1 + y1 * horiz);
+        int root2 = this.mazeSet.find(x2 + y2 * horiz);
+        this.mazeSet.union(root1 , root2);
+    }
+    
+    private boolean isConnected(int x1, int y1, int x2, int y2)
+    {
+        return mazeSet.isSameSet(x1 + y1 * horiz, x2 + y2 * horiz);
+    }
+  
+    private void initArr(int[] arr)
+    {
+        for (int i = 0; i < arr.length; i++)
+        {
+            arr[i] = i;
+        }
     }
 
+    private void shuffle(int[] arr)
+    {
+        for (int i = arr.length - 1; i > 0; i--)
+        {
+            int temp = randInt(i);
+            swap(arr, temp, i);
+        }
+    }
 
-
-    /**
-     * Fill in the rest of this method.  You should go through all the walls of
-     * the maze in random order, and remove any wall whose removal will not
-     * create a cycle.  Use the implementation of disjoint sets provided in the
-     * set package to avoid creating any cycles.
-     *
-     * Note the method randInt() further below, which generates a random
-     * integer.  randInt() generates different numbers every time the program
-     * is run, so that you can make lots of different mazes.
-     **/
-
-
-
-  }
+    private void swap(int[] arr, int i, int j)
+    {
+        int temp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = temp;
+    }
 
   /**
    *  toString() returns a string representation of the maze.
