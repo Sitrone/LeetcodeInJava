@@ -7,7 +7,7 @@ import com.cs61b.hw8.list.QueueEmptyException;
 
 public class ListSorts {
 
-  private final static int SORTSIZE = 1000;
+  private final static int SORTSIZE = 100;
 
   /**
    *  makeQueueOfQueues() makes a queue of queues, each containing one item
@@ -182,22 +182,27 @@ public class ListSorts {
     System.out.println(q.toString());
 
 //     Remove these comments for Part III.
-    Timer stopWatch = new Timer();
-    q = makeRandom(SORTSIZE);
-    stopWatch.start();
-    mergeSort(q);
-    stopWatch.stop();
-    System.out.println("Mergesort time, " + SORTSIZE + " Integers:  " +
-                       stopWatch.elapsed() + " msec.");
+    int size = SORTSIZE;
+    for(int i = 1; i < 8; i++)
+    {
+        Timer stopWatch = new Timer();
+        q = makeRandom(size);
+        stopWatch.start();
+        mergeSort(q);
+        stopWatch.stop();
+        System.out.println("Mergesort time, " + size + " Integers:  " +
+                           stopWatch.elapsed() + " msec.");
 
-    stopWatch.reset();
-    q = makeRandom(SORTSIZE);
-    stopWatch.start();
-    quickSort(q);
-    stopWatch.stop();
-    System.out.println("Quicksort time, " + SORTSIZE + " Integers:  " +
-                       stopWatch.elapsed() + " msec.");
-    
+        stopWatch.reset();
+        q = makeRandom(size);
+        stopWatch.start();
+        quickSort(q);
+        stopWatch.stop();
+        System.out.println("Quicksort time, " + size + " Integers:  " +
+                           stopWatch.elapsed() + " msec.");
+        size *= 10;
+        
+    }
   }
 
 }
