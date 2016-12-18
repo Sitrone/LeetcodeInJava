@@ -82,9 +82,9 @@ public class Sorts {
       while(whichDigit < 8)
       {
           newArr = countingSort(keys, whichDigit);
-          whichDigit++;
           System.out.print("sort by " + whichDigit + " digit: ");
           yell(newArr);
+          whichDigit++;
       }
     return newArr;
   }
