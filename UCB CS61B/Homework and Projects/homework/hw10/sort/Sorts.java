@@ -36,11 +36,7 @@ public class Sorts {
             throw new IllegalArgumentException("Illeagle argument " + whichDigit);
         }
         
-        LinkedQueue[] queues = new LinkedQueue[1 << 4];
-        for(int i = 0; i < 16; i++)
-        {
-            queues[i] = new LinkedQueue();
-        }
+        LinkedQueue[] queues = initQueueArr(1 << 4);
         int shift = whichDigit * 4;
         int com = 0x0F << shift;
        
@@ -62,6 +58,16 @@ public class Sorts {
             }
         }
         return keys;
+    }
+    
+    private static LinkedQueue[] initQueueArr(int length)
+    {
+        LinkedQueue[] queues = new LinkedQueue[length];
+        for(int i = 0; i < length; i++)
+        {
+            queues[i] = new LinkedQueue();
+        }
+        return queues;
     }
 
   /**
