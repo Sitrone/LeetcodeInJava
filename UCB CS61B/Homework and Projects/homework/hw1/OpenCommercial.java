@@ -1,3 +1,5 @@
+package com.cs61b.hw1;
+
 /* OpenCommercial.java */
 
 import java.net.*;
@@ -28,6 +30,21 @@ class OpenCommercial {
     inputLine = keyboard.readLine();
 
     /* Replace this comment with your solution.  */
-
+    URL url = new URL("http://www." + inputLine + ".com");
+    BufferedReader br = new BufferedReader(new InputStreamReader(url.openStream()));
+    String input;
+    String[] result = new String[5];
+    int i = 4;
+    while((input = br.readLine()) != null && i >= 0)
+    {
+        result[i--] = input;
+    }
+    br.close();
+    
+    for(String s : result)
+    {
+        System.out.println(s);
+    }
+   
   }
 }
