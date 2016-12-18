@@ -1,6 +1,6 @@
 /* Player.java */
 
-package player;
+package com.cs61b.project2.player;
 
 /**
  *  A class that is extended by all Network players (human and machine).

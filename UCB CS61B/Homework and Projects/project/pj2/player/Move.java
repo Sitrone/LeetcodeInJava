@@ -1,6 +1,6 @@
 /* Move.java  */
 
-package player;
+package com.cs61b.project2.player;
 
 /**
  *  A public class for holding all the fields in a move.  This class is a

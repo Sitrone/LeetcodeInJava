@@ -1,6 +1,6 @@
 /* MachinePlayer.java */
 
-package player;
+package com.cs61b.project2.player;
 
 /**
  *  An implementation of an automatic Network player.  Keeps track of moves
