@@ -1,6 +1,9 @@
 /* Sorts.java */
 
-package sort;
+package com.cs61b.hw10;
+
+import com.cs61b.hw8.list.LinkedQueue;
+import com.cs61b.hw8.list.QueueEmptyException;
 
 public class Sorts {
 
@@ -23,11 +26,43 @@ public class Sorts {
    *    and containing the same keys sorted according to the chosen digit.
    *
    *    Note:  Return a _newly_ created array.  DO NOT CHANGE THE ARRAY keys.
+   *  @throws QueueEmptyException 
    **/
-  public static int[] countingSort(int[] keys, int whichDigit) {
-    // Replace the following line with your solution.
-    return null;
-  }
+    public static int[] countingSort(int[] keys, int whichDigit) throws QueueEmptyException
+    {
+        // Replace the following line with your solution.
+        if(whichDigit < 0 || whichDigit > 7)
+        {
+            throw new IllegalArgumentException("Illeagle argument " + whichDigit);
+        }
+        
+        LinkedQueue[] queues = new LinkedQueue[1 << 4];
+        for(int i = 0; i < 16; i++)
+        {
+            queues[i] = new LinkedQueue();
+        }
+        int shift = whichDigit * 4;
+        int com = 0x0F << shift;
+       
+        for(int i = 0; i < keys.length; i++)
+        {
+            int pos = (keys[i] & com) >> shift;
+            queues[pos].enqueue(keys[i]);
+        }
+        for(int i = 0, j = 0; i < keys.length && j < 16; )
+        {
+            if(!queues[j].isEmpty())
+            {
+                keys[i] = (int) queues[j].dequeue();
+                i++;
+            }
+            else
+            {
+                j++;
+            }
+        }
+        return keys;
+    }
 
   /**
    *  radixSort() sorts an array of int keys (using all 32 bits
@@ -37,10 +72,21 @@ public class Sorts {
    *    and containing the same keys in sorted order.
    *
    *    Note:  Return a _newly_ created array.  DO NOT CHANGE THE ARRAY keys.
+ * @throws QueueEmptyException 
    **/
-  public static int[] radixSort(int[] keys) {
+  public static int[] radixSort(int[] keys) throws QueueEmptyException 
+  {
     // Replace the following line with your solution.
-    return null;
+      int whichDigit = 0;
+      int[] newArr = new int[keys.length];
+      while(whichDigit < 8)
+      {
+          newArr = countingSort(keys, whichDigit);
+          whichDigit++;
+          System.out.print("sort by " + whichDigit + " digit: ");
+          yell(newArr);
+      }
+    return newArr;
   }
 
   /**
@@ -48,20 +94,23 @@ public class Sorts {
    *  (base 16).
    *  @param key is an array of ints.
    **/
-  public static void yell(int[] keys) {
-    System.out.print("keys are [ ");
-    for (int i = 0; i < keys.length; i++) {
-      System.out.print(Integer.toString(keys[i], 16) + " ");
+    public static void yell(int[] keys)
+    {
+        System.out.print("keys are [ ");
+        for (int i = 0; i < keys.length; i++)
+        {
+            System.out.print(Integer.toString(keys[i], 10) + " ");
+        }
+        System.out.println("]");
     }
-    System.out.println("]");
-  }
 
   /**
    *  main() creates and sorts a sample array.
    *  We recommend you add more tests of your own.
    *  Your test code will not be graded.
+   * @throws QueueEmptyException 
    **/
-  public static void main(String[] args) {
+  public static void main(String[] args) throws QueueEmptyException {
     int[] keys = { Integer.parseInt("60013879", 16),
                    Integer.parseInt("11111119", 16),
                    Integer.parseInt("2c735010", 16),
@@ -84,7 +133,7 @@ public class Sorts {
 
     yell(keys);
     keys = radixSort(keys);
-    yell(keys);
+//    yell(keys);
   }
 
 }
