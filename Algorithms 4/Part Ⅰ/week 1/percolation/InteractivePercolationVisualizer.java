@@ -1,3 +1,5 @@
+package com.algs4.hw1;
+
 /******************************************************************************
  *  Compilation:  javac InteractivePercolationVisualizer.java
  *  Execution:    java InteractivePercolationVisualizer n

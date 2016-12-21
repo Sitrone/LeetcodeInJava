@@ -1,3 +1,5 @@
+package com.algs4.hw1;
+
 /******************************************************************************
  *  Compilation:  javac PercolationVisualizer.java
  *  Execution:    java PercolationVisualizer input.txt
@@ -17,6 +19,7 @@
  ******************************************************************************/
 
 import java.awt.Font;
+import java.io.File;
 
 import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.StdDraw;
@@ -62,7 +65,10 @@ public class PercolationVisualizer {
     }
 
     public static void main(String[] args) {
-        In in = new In(args[0]);      // input file
+        String path = System.getProperty("user.dir") + 
+                File.separator + "conf" + File.separator + "hw1" + File.separator;
+        String inputfile = path + "jerry47.txt";
+        In in = new In(inputfile);      // input file
         int n = in.readInt();         // n-by-n percolation system
 
         // turn on animation mode
