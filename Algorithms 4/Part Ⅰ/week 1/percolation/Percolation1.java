@@ -2,18 +2,19 @@ package com.algs4.hw1;
 
 import edu.princeton.cs.algs4.WeightedQuickUnionUF;
 
-public class Percolation
+public class Percolation1
 {
     private int size;
     private boolean[][] status;
     private WeightedQuickUnionUF uf;
+    private WeightedQuickUnionUF ufToTop;
     private int top, bottom;
 
     // 关键，多设一个top和bottom节点，用来关联top row和bottom row
     // 另外，i,代表行，j，代表列
     // 有backwash问题
     
-    public Percolation(int n)
+    public Percolation1(int n)
     {
         if (n <= 0)
         {
@@ -24,6 +25,7 @@ public class Percolation
         top = 0;
         bottom = n * n + 1;
         uf = new WeightedQuickUnionUF(n * n + 2);
+        ufToTop = new WeightedQuickUnionUF(n * n + 1);
         status = new boolean[n][n];
     }
 
@@ -39,7 +41,7 @@ public class Percolation
     {
         assertBounds(i);
         assertBounds(j);
-        return uf.connected(top, xyToPos(i, j));
+        return ufToTop.connected(top, xyToPos(i, j));
     }
 
     public void open(int i, int j)
@@ -51,29 +53,34 @@ public class Percolation
         if (i == 1)
         {
             uf.union(top, xyToPos(i, j));
+            ufToTop.union(top, xyToPos(i, j));
         }
 
-        if (i == size)
+        if (!percolates())
         {
-            uf.union(bottom, xyToPos(i, j));
+            if (i == size) uf.union(bottom, xyToPos(i, j));
         }
 
         int center = xyToPos(i, j);
         if (i > 1 && isOpen(i - 1, j))
         {
             uf.union(center, xyToPos(i - 1, j));
+            ufToTop.union(center, xyToPos(i - 1, j));
         }
         if (i < size && isOpen(i + 1, j))
         {
             uf.union(center, xyToPos(i + 1, j));
+            ufToTop.union(center, xyToPos(i + 1, j));
         }
         if (j > 1 && isOpen(i, j - 1))
         {
             uf.union(center, xyToPos(i, j - 1));
+            ufToTop.union(center, xyToPos(i, j - 1));
         }
         if (j < size && isOpen(i, j + 1))
         {
             uf.union(center, xyToPos(i, j + 1));
+            ufToTop.union(center, xyToPos(i, j + 1));
         }
     }
 

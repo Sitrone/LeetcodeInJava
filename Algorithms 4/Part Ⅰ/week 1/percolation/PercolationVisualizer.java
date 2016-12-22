@@ -30,7 +30,7 @@ public class PercolationVisualizer {
     private static final int DELAY = 100;
 
     // draw n-by-n percolation system
-    public static void draw(Percolation perc, int n) {
+    public static void draw(Percolation1 perc, int n) {
         StdDraw.clear();
         StdDraw.setPenColor(StdDraw.BLACK);
         StdDraw.setXscale(-0.05*n, 1.05*n);
@@ -75,7 +75,7 @@ public class PercolationVisualizer {
         StdDraw.enableDoubleBuffering();
 
         // repeatedly read in sites to open and draw resulting system
-        Percolation perc = new Percolation(n);
+        Percolation1 perc = new Percolation1(n);
         draw(perc, n);
         StdDraw.show();
         StdDraw.pause(DELAY);
