@@ -19,6 +19,7 @@ package com.algs4.hw1;
  ******************************************************************************/
 
 import java.awt.Font;
+import java.io.File;
 
 import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.StdDraw;
@@ -29,7 +30,7 @@ public class PercolationVisualizer {
     private static final int DELAY = 100;
 
     // draw n-by-n percolation system
-    public static void draw(Percolation perc, int n) {
+    public static void draw(Percolation1 perc, int n) {
         StdDraw.clear();
         StdDraw.setPenColor(StdDraw.BLACK);
         StdDraw.setXscale(-0.05*n, 1.05*n);
@@ -64,14 +65,17 @@ public class PercolationVisualizer {
     }
 
     public static void main(String[] args) {
-        In in = new In(args[0]);      // input file
+        String path = System.getProperty("user.dir") + 
+                File.separator + "conf" + File.separator + "hw1" + File.separator;
+        String inputfile = path + "jerry47.txt";
+        In in = new In(inputfile);      // input file
         int n = in.readInt();         // n-by-n percolation system
 
         // turn on animation mode
         StdDraw.enableDoubleBuffering();
 
         // repeatedly read in sites to open and draw resulting system
-        Percolation perc = new Percolation(n);
+        Percolation1 perc = new Percolation1(n);
         draw(perc, n);
         StdDraw.show();
         StdDraw.pause(DELAY);
