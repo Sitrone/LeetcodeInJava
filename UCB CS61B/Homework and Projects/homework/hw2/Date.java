@@ -1,8 +1,10 @@
-package com.cs61b;
+package com.cs61b.hw2;
 
 public class Date
 {
-
+	private static final int[] LEAPYEAR_DAYS = { 0, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
+	private static final int[] NON_LEAPYEAR_DAYS = { 0, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
+	
     /* Put your private data fields here. */
     private int day;
     private int month;
@@ -100,25 +102,10 @@ public class Date
      *            is the year in question, with no digits omitted.
      * @return the number of days in the given month.
      */
-    public static int daysInMonth(int month, int year)
-    {
-        switch (month)
-            {
-            case 2:
-                if (isLeapYear(year))
-                {
-                    return 29;
-                }
-                return 28;
-            case 4:
-            case 6:
-            case 9:
-            case 11:
-                return 30;
-            default:
-                return 31;
-            }
-    }
+	public static int daysInMonth(int month, int year)
+	{
+		return isLeapYear(year) ? LEAPYEAR_DAYS[month] : NON_LEAPYEAR_DAYS[month];
+	}
 
     /**
      * Checks whether the given date is valid.

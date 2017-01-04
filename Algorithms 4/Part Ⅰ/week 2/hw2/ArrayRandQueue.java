@@ -83,7 +83,7 @@ public class ArrayRandQueue<Item> implements RandomizedQueue<Item>
 			{
 				arr[i] = (Item) elements[i];
 			}
-			shuffle(arr);
+			StdRandom.shuffle(arr);
 		}
 
 		@Override
@@ -101,30 +101,13 @@ public class ArrayRandQueue<Item> implements RandomizedQueue<Item>
 			}
 			return arr[index++];
 		}
-		
-	    private void shuffle(Item[] arr)
-	    {
-	        for (int i = arr.length - 1; i > 0; i--)
-	        {
-	            int temp = StdRandom.uniform(i);
-	            swap(arr, temp, i);
-	        }
-	    }
-
-	    private void swap(Item[] arr, int i, int j)
-	    {
-	    	Item temp = arr[i];
-	        arr[i] = arr[j];
-	        arr[j] = temp;
-	    }
-		
 	}
-	
+
 	private void resize(int len)
 	{
 		@SuppressWarnings("unchecked")
 		Item[] temp = (Item[]) new Object[len];
-		for(int i = 0; i < size; i++)
+		for (int i = 0; i < size; i++)
 		{
 			temp[i] = elements[i];
 		}
@@ -141,7 +124,7 @@ public class ArrayRandQueue<Item> implements RandomizedQueue<Item>
 	
 	private void checkEmpty()
 	{
-		if(isEmpty())
+		if (isEmpty())
 		{
 			throw new NoSuchElementException();
 		}
@@ -156,7 +139,7 @@ public class ArrayRandQueue<Item> implements RandomizedQueue<Item>
 	public String toString()
 	{
 		String res = "";
-		for(int i = 0; i < size; i++)
+		for (int i = 0; i < size; i++)
 		{
 			res += elements[i] + " ";
 		}

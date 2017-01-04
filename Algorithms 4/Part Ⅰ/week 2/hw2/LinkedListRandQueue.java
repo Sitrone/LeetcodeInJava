@@ -106,7 +106,7 @@ public class LinkedListRandQueue<Item> implements RandomizedQueue<Item>
 				arr[i] = cur.item;
 				cur = cur.next;
 			}
-			shuffle(arr);
+			StdRandom.shuffle(arr);
 		}
 
 		@Override
@@ -129,22 +129,6 @@ public class LinkedListRandQueue<Item> implements RandomizedQueue<Item>
 		{
 			throw new UnsupportedOperationException();
 		}
-		
-	    private void shuffle(Item[] arr)
-	    {
-	        for (int i = arr.length - 1; i > 0; i--)
-	        {
-	            int temp = StdRandom.uniform(i);
-	            swap(arr, temp, i);
-	        }
-	    }
-
-	    private void swap(Item[] arr, int i, int j)
-	    {
-	    	Item temp = arr[i];
-	        arr[i] = arr[j];
-	        arr[j] = temp;
-	    }
 	}
 	
 	private void checkNull(Item item)
