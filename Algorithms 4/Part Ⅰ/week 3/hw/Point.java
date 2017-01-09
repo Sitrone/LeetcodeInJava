@@ -62,7 +62,16 @@ public class Point implements Comparable<Point> {
      */
     public double slopeTo(Point that) {
         /* YOUR CODE HERE */
-    	return Double.NaN;
+		if (that == null)
+			throw new NullPointerException();
+		
+		if (this.x == that.x && this.y == that.y)
+			return Double.NEGATIVE_INFINITY;
+		if (this.x == that.x && this.y != that.y)
+			return Double.POSITIVE_INFINITY;
+		if (this.x != that.x && this.y == that.y)
+			return +0.0;
+		return (double) (that.y - y) / (that.x - x);
     }
 
     /**
@@ -79,12 +88,14 @@ public class Point implements Comparable<Point> {
      */
     public int compareTo(Point that) {
         /* YOUR CODE HERE */
-    	if (this.y <= that.y && this.x < that.x)
-    		return -1;
-    	else if (this.x == that.x && this.y == that.y)
-    		return 0;
-    	else
-    		return 1;
+		if (that == null)
+			throw new NullPointerException();
+		if (this.y < that.y || (this.y == that.y && this.x < that.x))
+			return -1;
+		else if (this.x == that.x && this.y == that.y)
+			return 0;
+		else
+			return 1;
     }
 
     /**
@@ -93,11 +104,17 @@ public class Point implements Comparable<Point> {
      *
      * @return the Comparator that defines this ordering on points
      */
-    public Comparator<Point> slopeOrder() {
-        /* YOUR CODE HERE */
-    	return null;
+    public Comparator<Point> slopeOrder(){
+    	return new SlopeOrder();
     }
 
+    private final class SlopeOrder implements Comparator<Point>{
+		@Override
+		public int compare(Point o1, Point o2)
+		{
+			return Double.compare(slopeTo(o1), slopeTo(o2));
+		}
+    }
 
     /**
      * Returns a string representation of this point.
@@ -111,10 +128,48 @@ public class Point implements Comparable<Point> {
         return "(" + x + ", " + y + ")";
     }
 
+	private static void verify(boolean invariant)
+	{
+		if (!invariant)
+		{
+			System.out.println("*** ERROR:  ");
+			Thread.dumpStack();
+		}
+	}
     /**
      * Unit tests the Point data type.
      */
     public static void main(String[] args) {
         /* YOUR CODE HERE */
+		StdDraw.setScale(0, 100);
+		Point a = new Point(20, 20);
+		Point b = new Point(80, 80);
+		Point c = new Point(40, 60);
+		Point d = new Point(60, 100);
+		StdDraw.setPenColor(StdDraw.RED);
+		a.draw();
+		b.draw();
+		c.draw();
+		d.draw();
+		a.drawTo(b);
+		a.drawTo(d);
+		StdDraw.setPenColor(StdDraw.BLUE);
+		a.drawTo(c);
+
+		System.out.println("Slope to vertical line");
+		verify(a.slopeTo(new Point(a.x, 40)) == Double.POSITIVE_INFINITY);
+
+		System.out.println("Slope to horisontal line");
+		verify(a.slopeTo(new Point(40, a.y)) == 0);
+
+		System.out.println("Slope to itself");
+		verify(a.slopeTo(a) == Double.NEGATIVE_INFINITY);
+
+		System.out.println("Slope to an arbitrary point");
+		verify(a.slopeTo(b) == 1.0);
+		verify(a.slopeTo(c) == 2.0);
+
+		System.out.println("Equal slopes");
+		verify(a.slopeTo(c) == a.slopeTo(d));
     }
 }
