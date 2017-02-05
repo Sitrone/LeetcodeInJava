@@ -1,15 +1,26 @@
 package com.spring.domain;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 public class Product implements Serializable 
 {
 
 	private static final long serialVersionUID = 2519593427357947906L; 
 	
+	private int id;
 	private String name;
     private String description;
-    private float price;
+    private BigDecimal price;
+    
+	public int getId()
+	{
+		return id;
+	}
+	public void setId(int id)
+	{
+		this.id = id;
+	}
 	public String getName()
 	{
 		return name;
@@ -26,13 +37,13 @@ public class Product implements Serializable
 	{
 		this.description = description;
 	}
-	public float getPrice()
+	public BigDecimal getPrice()
 	{
 		return price;
 	}
-	public void setPrice(float price)
+	public void setPrice(BigDecimal bigDecimal)
 	{
-		this.price = price;
+		this.price = bigDecimal;
 	}
     
 }

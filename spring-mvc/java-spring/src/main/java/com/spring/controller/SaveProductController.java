@@ -1,5 +1,7 @@
 package com.spring.controller;
 
+import java.math.BigDecimal;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -30,11 +32,11 @@ public class SaveProductController implements Controller
 		product.setDescription(productForm.getDescription());
 		try
 		{
-			product.setPrice(Float.parseFloat(productForm.getPrice()));
+			product.setPrice(new BigDecimal(productForm.getPrice()));
 		}
 		catch (NumberFormatException e)
 		{
-			throw new NumberFormatException("Failed to set price.");
+			throw new NumberFormatException("Failed to set price." + e);
 		}
 
 		// insert code to save Product
