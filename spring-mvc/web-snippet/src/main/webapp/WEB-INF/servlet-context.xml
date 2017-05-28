@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/mvc"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:beans="http://www.springframework.org/schema/beans"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+
+	<!-- 把标记了@Controller注解的类转换为bean -->
+	<context:annotation-config />
+	<context:component-scan base-package="com.web.spring" />
+
+	<!-- <context:property-placeholder location="file:resources/application.properties"/> -->
+
+	<annotation-driven conversion-service="conversionService">
+	</annotation-driven>
+
+	<beans:bean id="conversionService"
+		class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
+	</beans:bean>
+	
+	   <!-- 启动Spring MVC的注解功能，完成请求和注解POJO的映射 -->
+    <beans:bean
+        class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter" />
+
+	<resources mapping="/resources/**" location="/resources/" />
+
+	<!-- 对模型视图名称的解析，即在模型视图名称添加前后缀 -->
+	<beans:bean
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<beans:property name="prefix" value="/WEB-INF/views/" />
+		<beans:property name="suffix" value=".jsp" />
+	</beans:bean>
+
+
+	<!-- <beans:import resource="controllers.xml" /> <beans:import resource="application-context.xml" 
+		/> -->
+
+</beans:beans>
