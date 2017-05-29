@@ -32,14 +32,21 @@ JAVA中可作为GC Roots的对象包括：
 主要是分为串行（serial），并行（parallel），并发（concurrent）三个大的类别  
 
 ##### **young genetation**
-1. Serial(mark-copy):stop the world,然后单线程收集,可以配合CMS  
-2. ParNew(mark-copy):stop the world,然后多线程收集,可以配合CMS  
-3. Parallel Scavenge(mark-copy):stop the world,有限制的多线程收集  
+1. Serial(mark-copy):stop the world,然后单线程收集,可以配合CMS,client模式青年代默认算法，GC日志关键字：DefNew(Default New Generation)  
+2. ParNew(mark-copy):stop the world,然后多线程收集,可以配合CMS，server模式青年代默认算法，GC日志关键字：ParNew(Parallel New Generation)  
+3. Parallel Scavenge(mark-copy):stop the world,有限制的多线程收集，不能和CMS组合，关注吞吐量，GC日志关键字：PSYoungGen  
 
 ##### **old generation**
-1. Concurrent Mark Sweep(as title):部分 stop the world,多线程收集  
-2. Serial Old(mark-compact): stop the world,单线程收集，CMS备选方案  
-3. Parallel Old(mark-compact):stop the world,多线程收集  
+1. Concurrent Mark Sweep(mark-sweep as title):部分 stop the world,多线程收集  
+2. Serial Old(mark-compact): stop the world,单线程收集，CMS备选方案，GC日志关键字：Tenured  
+3. Parallel Old(mark-compact):stop the world,多线程收集，只能和Parallel Scavenge组合使用，GC日志关键字：ParOldGen  
 
 ##### **G1**
-将java heap 划分为多个 region。 整体上看 是 mark-compact 局部上看(region之间)上看 是 mark-copy
+将java heap 划分为多个 region。 整体上看 是 mark-compact 局部上看(region之间)上看 是 mark-copy  
+
+##### 各种收集器的组合方式  
+![image](pic/垃圾收集器.jpg)
+
+### 参考  
+1. 《深入理解Java虚拟机》  
+2. [Major GC和Full GC的区别是什么？触发条件呢？](https://www.zhihu.com/question/41922036/answer/93079526)
