@@ -38,6 +38,8 @@ JAVA中可作为GC Roots的对象包括：
 
 ##### **old generation**
 1. Concurrent Mark Sweep(mark-sweep as title):部分 stop the world,多线程收集  
+优点：并发搜集，低停顿  
+缺点：对CPU资源敏感， 无法处理浮动垃圾(Floating Garbage)，收集结束会产生大量的碎片  
 2. Serial Old(mark-compact): stop the world,单线程收集，CMS备选方案，GC日志关键字：Tenured  
 3. Parallel Old(mark-compact):stop the world,多线程收集，只能和Parallel Scavenge组合使用，GC日志关键字：ParOldGen  
 
